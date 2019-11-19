@@ -16,8 +16,11 @@ def process_song_file(cur, filepath):
     
     # insert artist record
     artist_data = list(df.loc[["artist_id", "artist_name", "artist_location", 
-                               "artist_latitude", "artist_longtitude"]].values)
-    cur.execute(artist_table_insert, artist_data)
+                           "artist_latitude", "artist_longtitude"]].values)
+    
+    if artist_data[0] not in artist_dict.keys(): 
+        artist_dict[artist_data[0]] = 1
+        cur.execute(artist_table_insert, artist_data)
 
 
 def process_log_file(cur, filepath):
@@ -38,15 +41,19 @@ def process_log_file(cur, filepath):
     time_df = pd.DataFrame(data=list(time_data), columns=column_labels)
 
     for i, row in time_df.iterrows():
-        cur.execute(time_table_insert, list(row))
+        if row[0] not in time_dict.keys():
+            cur.execute(time_table_insert, list(row))
+            time_dict[row[0]] = 1
 
     # load user table
     user_df = user_df = df.loc[:, ["userId", "firstName", "lastName", "gender", "level"]]
     user_df.drop_duplicates(inplace=True)
-
+        
     # insert user records
     for i, row in user_df.iterrows():
-        cur.execute(user_table_insert, row)
+        if str(row[0]) not in user_dict.keys():
+            cur.execute(user_table_insert, row)
+            user_dict[str(row[0])] = 1
 
     # insert songplay records
     for index, row in df.iterrows():
@@ -54,8 +61,7 @@ def process_log_file(cur, filepath):
         #get songid and artistid from song and artist tables
         cur.execute(song_select, (row.song, row.artist, row.length))
         results = cur.fetchone()
-       # print(results)
-    
+           
         if results:
             songid, artistid = results
         else:
@@ -68,8 +74,7 @@ def process_log_file(cur, filepath):
         songplay_data.song = songid
         songplay_data.artist = artistid
         cur.execute(songplay_table_insert, songplay_data)
-        conn.commit()
-
+        
 
 def process_data(cur, conn, filepath, func):
     # get all files matching extension from directory
@@ -92,6 +97,7 @@ def process_data(cur, conn, filepath, func):
 
 
 def main():
+    
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()
 
@@ -102,4 +108,7 @@ def main():
 
 
 if __name__ == "__main__":
+    artist_dict = {}
+    user_dict = {}
+    time_dict = {}
     main()

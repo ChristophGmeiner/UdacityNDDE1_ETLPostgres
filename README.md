@@ -5,7 +5,8 @@ Runscript holds all running scripts in an etl way
 git is initiated
 create script finshed until select songs, also etl py and ipynb
 
-pk violation artist_id, double check mit if...ggf mit dict in py
+pk violation artist_id, double check mit if...ggf mit dict in py -- solved
+now same case with user
 
 <h1>ETL process for creating Sparkify data model in Postgres</h1>
 
