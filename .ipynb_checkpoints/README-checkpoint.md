@@ -1,14 +1,10 @@
-Running Notes:
-
-git is commited, push remote open
-
 <h1>ETL process for Creating Sparkify Data Model in Postgres</h1>
-
-<p> Sparkify is a simulated online music streaming service </p>
+<p>This is my first project for the Udacity Nanodegree of Data Engineering. It is about an etl process (postgres based) for Sparkify.</p>
+<p> Sparkify is a simulated (not-real) online music streaming service.</p>
 
 <p>This Git repository shows how to script an etl process for loading data from json raw data to a Postgre SQL Database and for creating fact and dimension tables in that manner.</p>
 
-<p>This is done using Python and the mainly the libraries pandas and psycopg2</p>
+<p>This is done using Python, mainly with pandas and psycopg2</p>
 
 
 <h2>Purpose of the Database sparkifydb</h2>
@@ -26,8 +22,13 @@ git is commited, push remote open
 <h4>song data</h4>
 <p>This directory contains jsons which show basically available songs and artists on Sparkify.</p>
 
-<h3>Scripts</h3>
+<h3>Scripts and Files</h3>
 <p>Basically the shell script RunScripts.sh contains the relevant etl files. So basically running this script (./RunScripts.sh) resets the sparkify database to an empty state and then creates all the table structures (create_tables.py). After that all the necessary data is derived from the json files under the /data directory and loaded into the tables created with the etl.py. The functions from sql_queries.py are used in both of these scripts for dropping, creating and inserting in postgre tables.</p>
+
+<h4>Other Files</h4>
+
+<h5>test.ipynb</h5>
+<p>A notebook for testing the contents of the sql tables.</p>
 
 <h3>Final Data Structure</h3>
 <p>Please find descriptions of the final tables below</p>
@@ -46,3 +47,8 @@ git is commited, push remote open
 
 <h4>time</h4>
 <p>This table contains master data on the timestamp, i.e. what hour, day, month, etc.</p>
+
+<h4>analysis</h4>
+<p>This notebook shows some basic analysis.</p>
+
+<h2>Potential next steps and imporovements</h2>
