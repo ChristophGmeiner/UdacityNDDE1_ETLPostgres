@@ -1,14 +1,8 @@
 Running Notes:
 
-Runscript holds all running scripts in an etl way
+git is commited, push remote open
 
-git is initiated
-create script finshed until select songs, also etl py and ipynb
-
-pk violation artist_id, double check mit if...ggf mit dict in py -- solved
-now same case with user
-
-<h1>ETL process for creating Sparkify data model in Postgres</h1>
+<h1>ETL process for Creating Sparkify Data Model in Postgres</h1>
 
 <p> Sparkify is a simulated online music streaming service </p>
 
@@ -17,7 +11,38 @@ now same case with user
 <p>This is done using Python and the mainly the libraries pandas and psycopg2</p>
 
 
-<h2>Purpose of the database sparkifydb</h2>
+<h2>Purpose of the Database sparkifydb</h2>
 <p> The sparkifydb database is postgre SQL based and is about storing information about songs and listening behaviour of the users </p>
 <p> The analytical goal of this database to get all kings of insight into the user beahviour </p>
 
+<h2>Description of the ETL Pipeline</h2>
+
+<h3>Description of the raw Datasets</h3>
+<p>Raw data comes in json formats and is stored in several subdirectories und the /data directory</p>
+
+<h4>log data</h4>
+<p>This directory contains jsons which show basically user activity per day on Sparkify.</p>
+
+<h4>song data</h4>
+<p>This directory contains jsons which show basically available songs and artists on Sparkify.</p>
+
+<h3>Scripts</h3>
+<p>Basically the shell script RunScripts.sh contains the relevant etl files. So basically running this script (./RunScripts.sh) resets the sparkify database to an empty state and then creates all the table structures (create_tables.py). After that all the necessary data is derived from the json files under the /data directory and loaded into the tables created with the etl.py. The functions from sql_queries.py are used in both of these scripts for dropping, creating and inserting in postgre tables.</p>
+
+<h3>Final Data Structure</h3>
+<p>Please find descriptions of the final tables below</p>
+
+<h4>songplays</h4>
+<p>This is supposed to be the fact table and shows every single songplay activity, i.e. a user listened to a speicifc song at a specific time and so on. It has an artifical primary key via identity column and all other sorts of attributes concerning the songplay activity.</p>
+
+<h4>users</h4>
+<p>This table contains master data on users</p>
+
+<h4>songs</h4>
+<p>This table contains master data on songs</p>
+
+<h4>artists</h4>
+<p>This table contains master data on artists</p>
+
+<h4>time</h4>
+<p>This table contains master data on the timestamp, i.e. what hour, day, month, etc.</p>

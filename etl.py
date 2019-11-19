@@ -6,6 +6,11 @@ from sql_queries import *
 import json
 
 def process_song_file(cur, filepath):
+    '''processes all song json files and inserts the data afterwards in postgre sql tables
+    INPUT:
+    cur: A postgres / psycopg2 cursor object for fulfilling the insert tasks
+    filepath: A string indicating the directories for finding the relevant json files
+    '''
     # open song file
     df =  pd.read_json(filepath, typ = "series")
 
@@ -24,6 +29,11 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    '''processes all log json files and inserts the data afterwards in postgre sql tables
+    INPUT:
+    cur: A postgres / psycopg2 cursor object for fulfilling the insert tasks
+    filepath: A string indicating the directories for finding the relevant json files
+    '''
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -77,6 +87,12 @@ def process_log_file(cur, filepath):
         
 
 def process_data(cur, conn, filepath, func):
+    '''processes all relevant json files and inserts the data afterwards in sparkifydb postgre sql tables
+    INPUT:
+    cur: A postgres / psycopg2 cursor object for fulfilling the insert tasks
+    filepath: A string indicating the directories for finding the relevant json files
+    func: A function object indicating if song or log data should be loaded
+    '''
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
@@ -97,7 +113,7 @@ def process_data(cur, conn, filepath, func):
 
 
 def main():
-    
+    '''main function for managing the whole etl sparkifydb process'''
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()
 
@@ -108,6 +124,7 @@ def main():
 
 
 if __name__ == "__main__":
+    #the dicts below are necessary for avoiding pk violations in postgres, for checking whether an id was already inserted
     artist_dict = {}
     user_dict = {}
     time_dict = {}
