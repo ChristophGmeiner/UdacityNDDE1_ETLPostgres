@@ -52,3 +52,7 @@
 <p>This notebook shows some basic analysis.</p>
 
 <h2>Potential next steps and imporovements</h2>
+* Use Bulk method for loading data. This would be necessary if you have to load much bigger amounts of the data to speed up the performance
+* Create a way to make only increment loads
+* Create alerts or similar to monitor the etl pipeline
+
