@@ -23,9 +23,7 @@ def process_song_file(cur, filepath):
     artist_data = list(df.loc[["artist_id", "artist_name", "artist_location", 
                            "artist_latitude", "artist_longtitude"]].values)
     
-    if artist_data[0] not in artist_dict.keys(): 
-        artist_dict[artist_data[0]] = 1
-        cur.execute(artist_table_insert, artist_data)
+    cur.execute(artist_table_insert, artist_data)
 
 
 def process_log_file(cur, filepath):
@@ -51,20 +49,16 @@ def process_log_file(cur, filepath):
     time_df = pd.DataFrame(data=list(time_data), columns=column_labels)
 
     for i, row in time_df.iterrows():
-        if row[0] not in time_dict.keys():
-            cur.execute(time_table_insert, list(row))
-            time_dict[row[0]] = 1
-
+        cur.execute(time_table_insert, list(row))
+            
     # load user table
     user_df = user_df = df.loc[:, ["userId", "firstName", "lastName", "gender", "level"]]
     user_df.drop_duplicates(inplace=True)
         
     # insert user records
     for i, row in user_df.iterrows():
-        if str(row[0]) not in user_dict.keys():
-            cur.execute(user_table_insert, row)
-            user_dict[str(row[0])] = 1
-
+        cur.execute(user_table_insert, row)
+            
     # insert songplay records
     for index, row in df.iterrows():
 
@@ -124,8 +118,4 @@ def main():
 
 
 if __name__ == "__main__":
-    #the dicts below are necessary for avoiding pk violations in postgres, for checking whether an id was already inserted
-    artist_dict = {}
-    user_dict = {}
-    time_dict = {}
     main()

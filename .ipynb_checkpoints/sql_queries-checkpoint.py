@@ -19,7 +19,7 @@ time_table_drop = dropsql + table5
 # CREATE TABLES
 
 songplay_table_create = (createsql + table1 + " (songplay_id serial primary key, \
-                         start_time timestamp, user_id int, level \
+                         start_time timestamp not null, user_id int not null, level \
                          varchar, song_id varchar, artist_id varchar, \
                          session_id int, location varchar, user_agent \
                          varchar)")
@@ -29,12 +29,12 @@ user_table_create = (createsql + table2 + " (user_id int not null primary key, \
                      level varchar)")
 
 song_table_create = (createsql + table3 + " (song_id varchar not null \
-                     primary key, title varchar, artist_id varchar, \
+                     primary key, title varchar, artist_id varchar not null, \
                      year int, duration float)")
 
 artist_table_create = (createsql + table4 + " (artist_id varchar not null \
                        primary key, name varchar, \
-                       location varchar, latitude varchar, longitude varchar)")
+                       location varchar, latitude float, longitude float)")
 
 time_table_create = (createsql + table5 + " (start_time timestamp not null \
                      primary key, hour int, day int, week int, month int, \
@@ -49,19 +49,23 @@ songplay_table_insert = ("INSERT INTO songplays (start_time,\
 
 user_table_insert = ("INSERT INTO users (user_id, first_name, \
                       last_name, gender, level) VALUES \
-                      (%s, %s, %s, %s, %s)")
+                      (%s, %s, %s, %s, %s) \
+                      ON CONFLICT(user_id) DO UPDATE SET LEVEL = EXCLUDED.LEVEL")
 
 song_table_insert = ("INSERT INTO songs (song_id, title, artist_id, \
                       year, duration) VALUES \
-                      (%s, %s, %s, %s, %s)")
+                      (%s, %s, %s, %s, %s) \
+                      ON CONFLICT DO NOTHING")
 
 artist_table_insert = ("INSERT INTO artists (artist_id, name, \
                         location, latitude, longitude) VALUES \
-                      (%s, %s, %s, %s, %s)")
+                      (%s, %s, %s, %s, %s) \
+                      ON CONFLICT DO NOTHING")
 
 time_table_insert = ("INSERT INTO time (start_time, hour, day,\
                      week, month, year, weekday) VALUES \
-                      (%s, %s, %s, %s, %s, %s, %s)")
+                      (%s, %s, %s, %s, %s, %s, %s) \
+                      ON CONFLICT DO NOTHING")
 
 # FIND SONGS
 
